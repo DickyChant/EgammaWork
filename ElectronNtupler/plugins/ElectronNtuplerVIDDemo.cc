@@ -23,8 +23,7 @@
 
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/EDAnalyzer.h"
-
+#include "FWCore/Framework/interface/one/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 
@@ -49,8 +48,7 @@
 
 #include "DataFormats/EgammaCandidates/interface/ConversionFwd.h"
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
-#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
-
+#include "CommonTools/Egamma/interface/ConversionTools.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 
@@ -61,7 +59,7 @@
 // class declaration
 //
 
-class ElectronNtuplerVIDDemo : public edm::EDAnalyzer {
+class ElectronNtuplerVIDDemo : public edm::one::EDAnalyzer {
 public:
   explicit ElectronNtuplerVIDDemo(const edm::ParameterSet&);
   ~ElectronNtuplerVIDDemo();

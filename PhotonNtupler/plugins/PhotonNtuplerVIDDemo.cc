@@ -23,8 +23,7 @@
 
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/EDAnalyzer.h"
-
+#include "FWCore/Framework/interface/one/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 
@@ -58,7 +57,7 @@
 // class declaration
 //
 
-class PhotonNtuplerVIDDemo : public edm::EDAnalyzer {
+class PhotonNtuplerVIDDemo : public edm::one::EDAnalyzer {
 public:
   explicit PhotonNtuplerVIDDemo(const edm::ParameterSet&);
   ~PhotonNtuplerVIDDemo();
