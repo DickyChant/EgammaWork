@@ -59,7 +59,7 @@
 // class declaration
 //
 
-class PhotonNtuplerVIDwithMVADemo : public edm::one::EDAnalyzer {
+class PhotonNtuplerVIDwithMVADemo : public edm::one::EDAnalyzer<> {
    public:
       explicit PhotonNtuplerVIDwithMVADemo(const edm::ParameterSet&);
       ~PhotonNtuplerVIDwithMVADemo();
@@ -261,7 +261,7 @@ PhotonNtuplerVIDwithMVADemo::analyze(const edm::Event& iEvent, const edm::EventS
   // Get gen weight info
   edm::Handle< GenEventInfoProduct > genWeightH;
   iEvent.getByToken(genEventInfoProduct_,genWeightH);
-  genWeight_ = genWeightH->GenEventInfoProduct::weight();
+  genWeight_ = genWeightH->weight();
 
   // Get Pileup info
   Handle<edm::View<PileupSummaryInfo> > pileupHandle;

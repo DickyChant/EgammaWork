@@ -52,13 +52,13 @@
 
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 
-#include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
+#include "CommonTools/Egamma/interface/EffectiveAreas.h"
 
 //
 // class declaration
 //
 
-class SimpleElectronNtupler : public edm::one::EDAnalyzer {
+class SimpleElectronNtupler : public edm::one::EDAnalyzer<> {
    public:
       explicit SimpleElectronNtupler(const edm::ParameterSet&);
       ~SimpleElectronNtupler();
@@ -239,7 +239,7 @@ void SimpleElectronNtupler::analyze(const edm::Event& iEvent, const edm::EventSe
   // Get gen weight info
   edm::Handle< GenEventInfoProduct > genWeightH;
   iEvent.getByToken(genEventInfoProduct_,genWeightH);
-  genWeight_ = genWeightH->GenEventInfoProduct::weight();
+  genWeight_ = genWeightH->weight();
 
   // Get Pileup info
   Handle<edm::View<PileupSummaryInfo> > pileupHandle;

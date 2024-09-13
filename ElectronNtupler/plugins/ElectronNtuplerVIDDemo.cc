@@ -59,7 +59,7 @@
 // class declaration
 //
 
-class ElectronNtuplerVIDDemo : public edm::one::EDAnalyzer {
+class ElectronNtuplerVIDDemo : public edm::one::EDAnalyzer<> {
 public:
   explicit ElectronNtuplerVIDDemo(const edm::ParameterSet&);
   ~ElectronNtuplerVIDDemo();
@@ -264,7 +264,7 @@ ElectronNtuplerVIDDemo::analyze(const edm::Event& iEvent, const edm::EventSetup&
   // Get gen weight info
   edm::Handle< GenEventInfoProduct > genWeightH;
   iEvent.getByToken(genEventInfoProduct_,genWeightH);
-  genWeight_ = genWeightH->GenEventInfoProduct::weight();
+  genWeight_ = genWeightH->weight();
 
   // Get Pileup info
   Handle<edm::View<PileupSummaryInfo> > pileupHandle;

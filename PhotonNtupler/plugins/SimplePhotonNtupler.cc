@@ -44,7 +44,7 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 
-#include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
+#include "CommonTools/Egamma/interface/EffectiveAreas.h"
 
 #include "TTree.h"
 #include "Math/VectorUtil.h"
@@ -53,7 +53,7 @@
 // class declaration
 //
 
-class SimplePhotonNtupler : public edm::one::EDAnalyzer {
+class SimplePhotonNtupler : public edm::one::EDAnalyzer<> {
  public:
   explicit SimplePhotonNtupler(const edm::ParameterSet&);
   ~SimplePhotonNtupler();
