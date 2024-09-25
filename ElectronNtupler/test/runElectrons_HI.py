@@ -47,6 +47,13 @@ else :
     print("MiniAOD input files are used")
 process.source = cms.Source ("PoolSource", fileNames = inputFiles )                             
 
+# Adding centrality stuffs
+process.load("RecoHI.HiCentralityAlgos.CentralityBin_cfi")
+process.centralityBin.Centrality = cms.InputTag("hiCentrality")
+process.centralityBin.centralityVariable = cms.string("HFtowers")
+# process.patAlgosToolsTask.add(process.centralityBin)
+
+
 #
 # Configure the ntupler module
 #
@@ -75,7 +82,8 @@ process.ntupler = cms.EDAnalyzer('SimpleElectronNtupler',
                                  verticesMiniAOD     = cms.InputTag("offlineSlimmedPrimaryVertices"),
                                  conversionsMiniAOD  = cms.InputTag('reducedEgamma:reducedConversions'),
                                  # Effective areas for computing PU correction for isolations
-                                 effAreasConfigFile = cms.FileInPath("EgammaWork/ElectronNtupler/data/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt")
+                                 effAreasConfigFile = cms.FileInPath("EgammaWork/ElectronNtupler/data/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt"),
+                                 cent =  cms.InputTag("centralityBin","HFtowers")
                                  )
 
 process.TFileService = cms.Service("TFileService",
@@ -83,4 +91,4 @@ process.TFileService = cms.Service("TFileService",
                                    )
 
 
-process.p = cms.Path(process.ntupler)
+process.p = cms.Path(process.centralityBin + process.ntupler)

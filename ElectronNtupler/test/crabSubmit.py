@@ -5,7 +5,7 @@ import os,time
 
 config = config()
 
-submitVersion = "132x_v0"
+submitVersion = "132x_v1_addcent"
 
 # if os.environ["USER"] in ['tomc']:
 #   config.Data.outLFNDirBase = os.path.join('/store/user/tomc/eleId', submitVersion)

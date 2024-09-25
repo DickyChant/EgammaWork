@@ -89,6 +89,9 @@ class SimpleElectronNtupler : public edm::one::EDAnalyzer<> {
       edm::EDGetTokenT<double> rhoToken_;
       edm::EDGetTokenT<reco::BeamSpot> beamSpotToken_;
       edm::EDGetTokenT<GenEventInfoProduct> genEventInfoProduct_;
+      
+      // Add Heavy Ion variables 
+      edm::EDGetTokenT<int> centToken_;
 
       // AOD case data members
       edm::EDGetToken electronsToken_;
@@ -118,7 +121,6 @@ class SimpleElectronNtupler : public edm::one::EDAnalyzer<> {
 
       // all electron variables
       Int_t nElectrons_;
-
       std::vector<Float_t> pt_;
       std::vector<Float_t> genPt_;
       std::vector<Float_t> eSC_;
@@ -140,6 +142,7 @@ class SimpleElectronNtupler : public edm::one::EDAnalyzer<> {
       std::vector<Int_t>   expectedMissingInnerHits_;
       std::vector<Int_t>   passConversionVeto_;
       std::vector<Int_t>   isTrue_;
+      std::vector<Float_t> cent_;
 
       EffectiveAreas   effectiveAreas_;
 };
@@ -168,6 +171,9 @@ SimpleElectronNtupler::SimpleElectronNtupler(const edm::ParameterSet& iConfig):
   pileupToken_         = consumes<edm::View<PileupSummaryInfo>>(iConfig.getParameter<edm::InputTag>("pileup"));
   rhoToken_            = consumes<double>                      (iConfig.getParameter<edm::InputTag>("rho"));
   beamSpotToken_       = consumes<reco::BeamSpot>              (iConfig.getParameter<edm::InputTag>("beamSpot"));
+  
+  // Heavy Ion tokens
+  centToken_ = mayConsume<int> (iConfig.getParameter<edm::InputTag>("cent")); 
 
   // AOD tokens
   electronsToken_      = mayConsume<edm::View<reco::GsfElectron>>(iConfig.getParameter<edm::InputTag>("electrons"));
@@ -217,6 +223,7 @@ SimpleElectronNtupler::SimpleElectronNtupler(const edm::ParameterSet& iConfig):
   electronTree_->Branch("expectedMissingInnerHits", &expectedMissingInnerHits_);
   electronTree_->Branch("passConversionVeto"      , &passConversionVeto_);
   electronTree_->Branch("isTrue"                  , &isTrue_);
+  electronTree_->Branch("cent", &cent_);
 }
 
 
@@ -250,6 +257,12 @@ void SimpleElectronNtupler::analyze(const edm::Event& iEvent, const edm::EventSe
       nPUTrue_= puInfoElement.getTrueNumInteractions();
     }
   }
+
+  // Get Heavy ion values
+  // Get centrality
+  edm::Handle< int > centH;
+  iEvent.getByToken(centToken_,centH);
+  Float_t cent_evt = (*centH) / 2.0;
 
   // Get rho value
   edm::Handle< double > rhoH;
@@ -344,6 +357,7 @@ void SimpleElectronNtupler::analyze(const edm::Event& iEvent, const edm::EventSe
   expectedMissingInnerHits_.clear();
   passConversionVeto_.clear();
   isTrue_.clear();
+  cent_.clear();
 
   for (size_t i = 0; i < electrons->size(); ++i){
     const auto el = electrons->ptrAt(i);
@@ -403,6 +417,8 @@ void SimpleElectronNtupler::analyze(const edm::Event& iEvent, const edm::EventSe
 
     bool passConvVeto = !ConversionTools::hasMatchedConversion(*el, *conversions, theBeamSpot->position());
     passConversionVeto_.push_back( (int) passConvVeto );
+    
+    cent_.push_back(cent_evt);
 
     // Match to generator level truth
     float genPt = 0;
